@@ -9,3 +9,11 @@ class JobRole(JobRoleCreate):
     class Config:
         from_attributes = True
 
+class SkillCreate(BaseModel):
+    name:str
+    category:str=None
+
+class Skill(SkillCreate):
+    id:int
+    class Config:
+        from_attributes=True

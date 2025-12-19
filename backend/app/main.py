@@ -18,3 +18,11 @@ def read_roles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     roles = crud.get_job_roles(db, skip=skip, limit=limit)
     return roles
 
+@app.post("/skills/", response_model=schemas.Skill)
+def create_skill(skill:schemas.SkillCreate, db:Session=Depends(get_db)):
+    return crud.create_job_skill(db,skill)
+
+@app.get("/skills/", response_model=List[schemas.Skill])
+def read_skills(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    skills = crud.get_job_skills(db,skip,limit)
+    return skills
