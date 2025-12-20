@@ -1,9 +1,8 @@
-from fastapi import FastAPI , Depends
+from fastapi import FastAPI , Depends, HTTPException
 from . import models, schemas, crud
 from .database import engine, get_db
 from sqlalchemy.orm import Session
 from typing import List
-
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -26,3 +25,10 @@ def create_skill(skill:schemas.SkillCreate, db:Session=Depends(get_db)):
 def read_skills(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     skills = crud.get_job_skills(db,skip,limit)
     return skills
+
+@app.post("/roles/{role_id}/skills/{skill_id}")
+def connect_skill_to_role(role_id:int, skill_id:int, db:Session=Depends(get_db)):
+    role = crud.add_skill_to_role(db, role_id, skill_id)
+    if role is None:
+        raise HTTPException(status_code=404, detail="Role or Skill not found")
+    return role
