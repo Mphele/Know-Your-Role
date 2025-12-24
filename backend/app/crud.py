@@ -36,3 +36,16 @@ def add_skill_to_role(db:Session, role_id:int, skill_id:int):
     db.commit()
     db.refresh(role)
     return role
+
+
+def delete_job_role(db:Session, role_id:int):
+    role = db.query(models.JobRole).filter(models.JobRole.id == role_id).first()
+
+    if not role:
+        return None
+    
+    db.delete(role)
+    db.commit()
+
+    return role
+

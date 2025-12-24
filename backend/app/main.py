@@ -32,3 +32,11 @@ def connect_skill_to_role(role_id:int, skill_id:int, db:Session=Depends(get_db))
     if role is None:
         raise HTTPException(status_code=404, detail="Role or Skill not found")
     return role
+
+@app.delete("/roles/{role_id}",status_code=204)
+def delete_role(role_id:int, db: Session = Depends(get_db)):
+    role = crud.delete_job_role(db,role_id)
+    if role is None:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return None
+
