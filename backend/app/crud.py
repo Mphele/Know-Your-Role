@@ -9,8 +9,12 @@ def create_job_role(db:Session, role:schemas.JobRoleCreate):
 
     return model
 
-def get_job_roles(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.JobRole).offset(skip).limit(limit).all()
+def get_job_roles(db: Session, skip: int = 0, limit: int = 100,seniority:str=''):
+    query = db.query(models.JobRole)
+    if seniority:
+            return query.filter(models.JobRole.seniority==seniority).offset(skip).limit(limit).all()
+
+    return query.offset(skip).limit(limit).all()
 
 def create_job_skill(db:Session, skill:schemas.SkillCreate):
     model = models.Skill(name=skill.name, category = skill.category)

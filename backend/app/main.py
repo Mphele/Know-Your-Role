@@ -2,7 +2,7 @@ from fastapi import FastAPI , Depends, HTTPException
 from . import models, schemas, crud
 from .database import engine, get_db
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -13,8 +13,8 @@ def create_role(role:schemas.JobRoleCreate, db:Session=Depends(get_db)):
     return crud.create_job_role(db,role)
 
 @app.get("/roles/", response_model=List[schemas.JobRole])
-def read_roles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    roles = crud.get_job_roles(db, skip=skip, limit=limit)
+def read_roles(skip: int = 0, limit: int = 100, seniority:Optional[str]=None, db: Session = Depends(get_db)):
+    roles = crud.get_job_roles(db, skip=skip, limit=limit, seniority=seniority)
     return roles
 
 @app.post("/skills/", response_model=schemas.Skill)
