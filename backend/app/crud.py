@@ -53,3 +53,13 @@ def delete_job_role(db:Session, role_id:int):
 
     return role
 
+
+def edit_job_role(db:Session, role_id:int, new_role:schemas.JobRoleCreate):
+   role= db.query(models.JobRole).filter(models.JobRole.id==role_id).first()
+   if not role:
+       return None
+   role.title=new_role.title
+   role.seniority = new_role.seniority
+   db.commit()
+   db.refresh(role)
+   return role

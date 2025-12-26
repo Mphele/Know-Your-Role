@@ -40,3 +40,10 @@ def delete_role(role_id:int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Role not found")
     return None
 
+@app.put("/roles/{role_id}", response_model=schemas.JobRole)
+def update_role(role_id:int, new_role:schemas.JobRoleCreate, db:Session=Depends(get_db)):
+    role = crud.edit_job_role(db,role_id,new_role)
+    if not role:
+        raise HTTPException(status_code=404, detail="Role not found")
+    
+    return role
