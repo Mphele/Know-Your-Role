@@ -63,3 +63,25 @@ def edit_job_role(db:Session, role_id:int, new_role:schemas.JobRoleCreate):
    db.commit()
    db.refresh(role)
    return role
+
+def edit_job_skill(db:Session, skill_id:int, new_skill:schemas.SkillCreate):
+    skill = db.query(models.Skill).filter(models.Skill.id==skill_id).first()
+    if not skill:
+        return None
+    skill.name = new_skill.name
+    skill.category=new_skill.category
+
+    db.commit()
+    db.refresh(skill)
+    
+    return skill
+
+def delete_job_skill(db:Session, skill_id:int):
+    skill = db.query(models.Skill).filter(models.Skill.id==skill_id).first()
+    if not skill:
+        return None
+    
+    db.delete(skill)
+    db.commit()
+    
+    return skill

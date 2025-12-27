@@ -47,3 +47,19 @@ def update_role(role_id:int, new_role:schemas.JobRoleCreate, db:Session=Depends(
         raise HTTPException(status_code=404, detail="Role not found")
     
     return role
+
+@app.delete('/skills/{skill_id}', status_code=204)
+def delete_skill(skill_id:int, db:Session = Depends(get_db)):
+    skill = crud.delete_job_skill(db=db,skill_id=skill_id)
+    if not skill:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    return None
+
+@app.put("/skills/{skill_id}",response_model=schemas.Skill)
+def update_skill(skill_id:int,new_skill:schemas.SkillCreate,db:Session = Depends(get_db)):
+    skill = crud.edit_job_skill(db=db, new_skill=new_skill, skill_id=skill_id)
+    if not skill:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    return skill
