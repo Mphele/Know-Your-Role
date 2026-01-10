@@ -9,8 +9,11 @@ def create_job_role(db:Session, role:schemas.JobRoleCreate):
 
     return model
 
-def get_job_roles(db: Session, skip: int = 0, limit: int = 100,seniority:str=''):
+def get_job_roles(db: Session, skill_name:str = None, skip: int = 0, limit: int = 100,seniority:str=''):
     query = db.query(models.JobRole)
+    if skill_name:
+        query = query.join(models.JobRole.skills).filter(models.Skill.name==skill_name)
+        
     if seniority:
             return query.filter(models.JobRole.seniority==seniority).offset(skip).limit(limit).all()
 

@@ -13,8 +13,8 @@ def create_role(role:schemas.JobRoleCreate, db:Session=Depends(get_db)):
     return crud.create_job_role(db,role)
 
 @app.get("/roles/", response_model=List[schemas.JobRole])
-def read_roles(skip: int = 0, limit: int = 100, seniority:Optional[str]=None, db: Session = Depends(get_db)):
-    roles = crud.get_job_roles(db, skip=skip, limit=limit, seniority=seniority)
+def read_roles(skip: int = 0, limit: int = 100, seniority:Optional[str]=None, skill_name:Optional[str]=None, db: Session = Depends(get_db)):
+    roles = crud.get_job_roles(db, skip=skip, limit=limit, seniority=seniority, skill_name=skill_name)
     return roles
 
 @app.post("/skills/", response_model=schemas.Skill)
@@ -48,7 +48,7 @@ def update_role(role_id:int, new_role:schemas.JobRoleCreate, db:Session=Depends(
     
     return role
 
-@app.delete('/skills/{skill_id}', status_code=204)
+@app.delete('/skills/{skill_id}')
 def delete_skill(skill_id:int, db:Session = Depends(get_db)):
     skill = crud.delete_job_skill(db=db,skill_id=skill_id)
     if not skill:
