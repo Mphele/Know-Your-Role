@@ -13,7 +13,7 @@ class JobRole(Base):
     __tablename__ = "job_roles"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, unique=True, index=True)
+    title = Column(String, unique=False, index=True)
     seniority = Column(String, default="Mid")
     skills = relationship("Skill", secondary=role_skills, back_populates="job_roles")
 
